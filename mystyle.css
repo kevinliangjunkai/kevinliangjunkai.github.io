@@ -1,0 +1,11 @@
+p{
+   background-color:yellow;
+   color:green;
+}
+p{
+   padding:16px;
+   text-align:center;
+}
+P:hover{
+  background-color:#EA7500;
+}
