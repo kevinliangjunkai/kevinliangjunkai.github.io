@@ -1,39 +1,58 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>currency rate converter</title>
+		<title>currency rate calculator</title>
 		<link rel="stylesheet" href="mystyle.css">
+		<script src="script.js"></script>
+		
 	</head>
-	<body>
-		<div>
-			<p>這是匯率轉換器</p>
-			<label>please enter NTD</label>
-			<input id=="NTD" type="text" value=""/>
-			<br><br>
-			<input id="btn" type="button" value="Submit"/>
-			<hr>
-			Result:<p class="summary"></ul></p>
-		</div>
+<body>
+	<div>
+		<label>TWD amount：</label>  <!--label標籤-->
+		<input type="text" id="TWD">
+		<button onclick="calculate()">calculate</button>
+		<h2>result：</h2>
+		<p id="result"></p>  <!--P標籤-->
+	</div>
 	<script>
-		var summary=document.querySelector('.summary');
-		
-		document.getElementById('btn').onclick=function(){
-		var result='';
-        var NTD=parseInt(document.getElementById('NTD').value);
-		var USD='';
-		var EURO='';
-		var JPY='';
-		var KRW='';
-		var AUD='';
-		
-		USD=USD.toFixed(2);
-		<p>result=USD;</p>
-		EURO=EURO.toFixed(2);
-        <p>result=EURO;</p>
-		JPY=JPY.toFixed(2);
-		<p>result=USD; </p>
-		KRW=KRW.toFixed(2);
-		<p>result=KRW; </p>
-		AUD=AUD.toFixed(2);
-		<p>result=AUD; </p>
-		
+		var request = new XMLHttpRequest();
+		request.open("GET", "rate.xml", false);
+		request.send();
+		var xml = request.responseXML;
+
+		var currencies = xml.getElementsByTagName("Currency");
+		var rates = {};
+		for (var i = 0; i < currencies.length; i++) {
+		var currency = currencies[i].getAttribute("Code");
+		var rate = parseFloat(currencies[i].getElementsByTagName("ExchangeRate")[0].textContent);
+		rates[currency] = rate;
+
+
+	
+		function calculate() {
+			var TWD = parseFloat(document.getElementById("TWD").value);
+			var resultElement = document.getElementById("result");
+
+			if (isNaN(TWD)) {
+				resultElement.innerHTML = "請輸入有效的數字。";
+			return;
+		}
+
+		var convertedAmounts = {
+			USD: (TWD / rates.USD).toFixed(2),
+			EUR: (TWD / rates.EUR).toFixed(2),
+			JPY: (TWD / rates.JPY).toFixed(2),
+			KRW: (TWD / rates.KRW).toFixed(2),
+			AUD: (TWD / rates.AUD).toFixed(2)
+		};
+
+		var resultHTML = "";
+		for (var currency in convertedAmounts) {
+		resultHTML += convertedAmounts[currency] + " " + currency + "<br>";
+		}
+
+		resultElement.innerHTML = resultHTML;
+
+	</script>
+</body>
+</html>

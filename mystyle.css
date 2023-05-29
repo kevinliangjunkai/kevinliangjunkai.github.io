@@ -1,11 +1,11 @@
 p{
-   background-color:yellow;
-   color:green;
+   background-color:blue;
+   color:black;
 }
-p{
+label{
    padding:16px;
    text-align:center;
 }
-P:hover{
+label:hover{
   background-color:#EA7500;
 }
